@@ -1,0 +1,98 @@
+---
+import Layout from '../layouts/Layout.astro';
+
+const posts = [
+  {
+    slug: 'elegir-color-habitacion',
+    cat: 'Consejos',
+    title: 'Cómo elegir el color perfecto para cada habitación',
+    excerpt: 'La orientación, la luz y el uso del espacio determinan qué color funcionará mejor. Te explico los criterios que uso en cada proyecto para acertar siempre.',
+    date: 'Enero 2025',
+    readTime: '6 min',
+  },
+  {
+    slug: 'quitar-gotele-sin-obra',
+    cat: 'Técnicas',
+    title: 'Cómo eliminar el gotelé sin obra ni polvo',
+    excerpt: 'El método húmedo es la forma más eficiente de quitar la textura antigua. Paso a paso, con los materiales correctos y sin convertir tu casa en una obra.',
+    date: 'Febrero 2025',
+    readTime: '7 min',
+  },
+  {
+    slug: 'cuando-pintar-fachada',
+    cat: 'Exterior',
+    title: 'Cuándo es el mejor momento para pintar la fachada',
+    excerpt: 'La temperatura, la humedad y la lluvia influyen decisivamente en el resultado final. Te cuento cuándo actuar y cuándo esperar en Valencia.',
+    date: 'Marzo 2025',
+    readTime: '5 min',
+  },
+  {
+    slug: 'pintura-plastica-vs-vinilica',
+    cat: 'Materiales',
+    title: 'Pintura plástica vs vinílica: ¿cuál elegir?',
+    excerpt: 'Plástica, vinílica, acrílica, satinada, mate… Te explico las diferencias reales y cuándo usar cada tipo para no equivocarte en la ferretería.',
+    date: 'Abril 2025',
+    readTime: '5 min',
+  },
+  {
+    slug: 'tendencias-color-2025',
+    cat: 'Inspiración',
+    title: 'Tendencias en colores para el hogar en 2025',
+    excerpt: 'Tonos tierra, verde salvia y azul noche dominan este año. Te cuento cuáles son las paletas más demandadas y cómo incorporarlas sin miedo.',
+    date: 'Mayo 2025',
+    readTime: '6 min',
+  },
+  {
+    slug: 'errores-pintar-tu-mismo',
+    cat: 'Bricolaje',
+    title: '5 errores que cometes cuando pintas tú mismo',
+    excerpt: 'Desde no preparar la superficie hasta comprar pintura de baja calidad. Los fallos más comunes que arruinan el resultado y cómo evitarlos.',
+    date: 'Junio 2025',
+    readTime: '5 min',
+  },
+];
+---
+<Layout
+  title="Blog · Pinturas Moha"
+  description="Consejos, técnicas y guías de pintura escritas por un pintor profesional en Valencia."
+  currentPage="/blog"
+>
+
+  <div class="container">
+    <header class="page-header">
+      <p class="page-header__label">Consejos & artículos</p>
+      <h1 class="page-header__h1">Blog de pintura</h1>
+      <p class="page-header__lead">
+        Trucos, técnicas y guías escritas desde la experiencia real.
+        Todo lo que necesitas saber antes de empezar un proyecto.
+      </p>
+    </header>
+  </div>
+
+  <section class="section" style="padding-top:0">
+    <div class="container">
+      <div class="blog__grid">
+        {posts.map(p => (
+          <a href={`/blog/${p.slug}`} class="blog__card">
+            <div class="blog__img">
+              <div class="blog__img-placeholder">{p.cat}</div>
+            </div>
+            <div class="blog__body">
+              <span class="blog__cat">{p.cat}</span>
+              <h2 class="blog__title">{p.title}</h2>
+              <p class="blog__excerpt">{p.excerpt}</p>
+              <div class="blog__meta">
+                <span class="blog__date">{p.date} · {p.readTime} lectura</span>
+                <span class="blog__read">
+                  Leer
+                  <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" aria-hidden="true"><path d="M5 12h14M12 5l7 7-7 7"/></svg>
+                </span>
+              </div>
+            </div>
+          </a>
+        ))}
+      </div>
+    </div>
+  </section>
+
+</Layout>
