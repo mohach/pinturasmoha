@@ -1,237 +1,97 @@
 ---
 import Layout from '../../layouts/Layout.astro';
+import { posts } from '../../data/posts.js';
 
 export function getStaticPaths() {
-  return articles.map(a => ({ params: { slug: a.slug } }));
+  return posts.map(p => ({
+    params: { slug: p.slug },
+    props:  { post: p },
+  }));
 }
 
-const articles = [
-  {
-    slug: 'elegir-color-habitacion',
-    cat: 'Consejos',
-    title: 'Cómo elegir el color perfecto para cada habitación',
-    date: 'Enero 2025',
-    readTime: '6 min',
-    content: `
-<h2>El color lo cambia todo</h2>
-<p>Elegir el color de una habitación es probablemente la decisión más importante de cualquier reforma. Un color equivocado puede hacer que un espacio parezca más pequeño, más oscuro o simplemente incómodo. Con los criterios correctos, sin embargo, acertar es mucho más sencillo de lo que parece.</p>
-<p>Después de años pintando en Valencia, he aprendido que el color ideal no es solo cuestión de gusto personal: depende de la orientación de la habitación, la luz natural disponible, el tamaño del espacio y el uso que se le va a dar.</p>
-<h2>La orientación importa más de lo que crees</h2>
-<p>Las habitaciones orientadas al norte reciben luz fría y tenue. En estos casos, los tonos cálidos como el blanco roto, el beige o los amarillos suaves compensan esa frialdad y hacen el espacio más acogedor. Las habitaciones al sur reciben mucha luz directa. Aquí puedes permitirte tonos más frescos: azules suaves, verdes grisáceos o lavandas.</p>
-<div class="article__tip"><strong>Truco pro:</strong> Antes de comprar la pintura, pon una muestra en la pared y obsérvala a distintas horas del día. El color cambia radicalmente según la luz: mañana, mediodía y noche con luz artificial son tres versiones distintas del mismo tono.</div>
-<h2>La regla del 60-30-10</h2>
-<p>Esta regla de diseño de interiores es infalible. Divide los colores del espacio en tres proporciones: 60% el color dominante (paredes y suelo), 30% el color secundario (muebles principales y textiles grandes), y 10% el color de acento (cojines, cuadros, objetos decorativos pequeños).</p>
-<p>Aplicar esta regla garantiza un equilibrio visual naturalmente armonioso sin resultar monótono.</p>
-<h2>Recomendaciones por habitación</h2>
-<h3>Salón</h3>
-<p>El salón necesita colores que inviten a la conversación y al descanso. Los tonos tierra como el terracota suave, el beige tostado o el gris cálido funcionan muy bien. El verde salvia es actualmente uno de los colores más demandados: transmite calma y conecta con la naturaleza.</p>
-<h3>Dormitorio</h3>
-<p>Para dormir bien necesitas colores que bajen el ritmo. Los azules medios, los verdes grisáceos y los lavandas suaves favorecen el descanso. Evita el rojo, el naranja intenso o el amarillo brillante en dormitorios.</p>
-<h3>Cocina y baños</h3>
-<p>En estas zonas opta por pinturas con acabado satinado o semi-brillo: son más resistentes a la humedad y mucho más fáciles de limpiar. Los blancos cálidos, los verdes menta y los azules cerámicos dan un toque mediterráneo muy bonito.</p>
-<div class="article__tip"><strong>Consejo final:</strong> Si te da miedo un color atrevido, prueba primero con una pared de acento. Pinta solo la pared del cabecero o la del fondo del salón. Si convence, extiendes. Si no, solo replicas una pared.</div>
-    `,
-  },
-  {
-    slug: 'quitar-gotele-sin-obra',
-    cat: 'Técnicas',
-    title: 'Cómo eliminar el gotelé sin obra ni polvo',
-    date: 'Febrero 2025',
-    readTime: '7 min',
-    content: `
-<h2>El gotelé: el gran enemigo del hogar moderno</h2>
-<p>Si tienes un piso construido entre los años 70 y los 90, lo más probable es que tus paredes estén cubiertas de gotelé. Esta textura rugosa, que en su día estaba de moda, hoy resulta anticuada y difícil de limpiar. La buena noticia: quitarlo es posible sin necesidad de picar las paredes ni hacer una obra mayor.</p>
-<h2>El método húmedo</h2>
-<p>El truco consiste en humedecer el gotelé antes de trabajarlo. Cuando la textura absorbe agua, se ablanda y es mucho más fácil de desprender sin generar polvo fino.</p>
-<h3>Materiales necesarios</h3>
-<ul>
-<li>Esponja grande o rodillo de agua</li>
-<li>Espátula ancha de al menos 40 cm</li>
-<li>Masilla de acabado o pasta de alisado</li>
-<li>Lija de grano 120 y 180</li>
-<li>Imprimación selladora</li>
-</ul>
-<h3>El proceso paso a paso</h3>
-<p><strong>1. Protege la zona.</strong> Cubre el suelo y los muebles con plásticos. Aunque el método es limpio, siempre cae material.</p>
-<p><strong>2. Humedece la pared.</strong> Con una esponja empapada o un pulverizador, moja bien una sección de unos 2 m². Espera 10-15 minutos para que el gotelé absorba el agua.</p>
-<p><strong>3. Raspa con la espátula.</strong> Movimientos horizontales firmes y constantes. No hace falta llegar al yeso: lo importante es reducir el relieve al máximo.</p>
-<div class="article__tip"><strong>Clave del método:</strong> No dejes que la zona se seque mientras trabajas. Si el gotelé vuelve a endurecerse, humedécelo de nuevo. Paciencia y humedad son los ingredientes esenciales.</div>
-<p><strong>4. Aplica pasta de alisado.</strong> Una vez retirado el grueso del gotelé, aplica una capa fina de masilla con la espátula en movimientos cruzados para rellenar los huecos que quedaron.</p>
-<p><strong>5. Lija y repasa.</strong> Cuando seque (4-6 horas), lija con grano 120. Aplica una segunda capa más fina si es necesario y finaliza con grano 180.</p>
-<p><strong>6. Imprimación y pintura.</strong> Aplica una capa de selladora antes de pintar para garantizar adhesión uniforme y evitar manchas.</p>
-<h2>¿Cuándo llamar a un profesional?</h2>
-<p>Si el gotelé cubre toda la vivienda o afecta a los techos, el trabajo manual puede llevar semanas y ser agotador. Un profesional con el equipo adecuado puede hacerlo en días con un resultado perfecto y sin el desgaste físico.</p>
-    `,
-  },
-  {
-    slug: 'cuando-pintar-fachada',
-    cat: 'Exterior',
-    title: 'Cuándo es el mejor momento para pintar la fachada',
-    date: 'Marzo 2025',
-    readTime: '5 min',
-    content: `
-<h2>Pintar en exterior no es como pintar dentro</h2>
-<p>La pintura exterior está completamente expuesta al clima. Temperatura, humedad, viento y lluvia son factores determinantes en el resultado final. En Valencia tenemos la suerte de un clima mediterráneo favorable, pero aún así hay épocas claramente mejores que otras.</p>
-<h2>Las condiciones ideales</h2>
-<ul>
-<li><strong>Temperatura:</strong> entre 10 °C y 30 °C. Por debajo de 10 °C la pintura no seca bien. Por encima de 35 °C seca demasiado rápido.</li>
-<li><strong>Humedad relativa:</strong> por debajo del 85 %. Con alta humedad pueden aparecer eflorescencias (manchas blancas de sales).</li>
-<li><strong>Sin lluvia:</strong> no solo durante la aplicación, sino también las 24-48 horas siguientes.</li>
-<li><strong>Sin sol directo:</strong> el sol de mediodía sobre la fachada seca la pintura antes de que pueda adherirse correctamente.</li>
-</ul>
-<h2>Los mejores meses en Valencia</h2>
-<h3>Primavera (marzo–mayo): ideal</h3>
-<p>Temperaturas suaves, baja probabilidad de lluvia y ausencia del calor extremo. La primavera es la mejor época para pintar fachadas en Valencia. Las noches frescas favorecen un secado progresivo y uniforme.</p>
-<h3>Otoño (septiembre–noviembre): muy recomendable</h3>
-<p>Casi tan bueno como la primavera. Temperaturas en descenso, menos sol directo y humedad manejable. Segunda mejor opción.</p>
-<h3>Verano (junio–agosto): con precauciones</h3>
-<p>Se puede pintar en verano trabajando en horarios extremos: mañana temprano (7-11 h) o tarde (17-20 h). El calor extremo al mediodía es el mayor enemigo.</p>
-<h3>Invierno (diciembre–febrero): evitar</h3>
-<p>Bajas temperaturas, lluvia frecuente y alta humedad hacen del invierno la peor época. Solo en urgencias con pinturas especiales formuladas para bajas temperaturas.</p>
-<div class="article__tip"><strong>Consejo:</strong> Revisa el parte meteorológico varios días antes. En Valencia el tiempo puede cambiar rápidamente. Prefiero retrasar un día antes que arriesgar el resultado de semanas de preparación.</div>
-<h2>La preparación es el 50 % del trabajo</h2>
-<p>No importa en qué época pintes: si la fachada no está bien preparada, la pintura no durará. Limpieza a presión, reparación de grietas, sellador antihumedad en zonas problemáticas e imprimación son pasos que no se ven pero que marcan toda la diferencia.</p>
-    `,
-  },
-  {
-    slug: 'pintura-plastica-vs-vinilica',
-    cat: 'Materiales',
-    title: 'Pintura plástica vs vinílica: ¿cuál elegir?',
-    date: 'Abril 2025',
-    readTime: '5 min',
-    content: `
-<h2>La jungla de las pinturas</h2>
-<p>Entrar en la sección de pinturas de una ferretería puede ser abrumador. Plástica, vinílica, acrílica, satinada, mate, al agua, al disolvente… Como pintor profesional, te explico las diferencias que realmente importan.</p>
-<h2>Pintura plástica</h2>
-<p>La más común en interiores residenciales españoles. Contiene resinas de PVA (acetato de polivinilo) que le dan durabilidad y lavabilidad. Sus ventajas: precio asequible, buena cobertura en pocas manos, fácil aplicación y acabado mate muy popular en salones y dormitorios.</p>
-<p>Su punto débil: en zonas de mucho tráfico puede desgastarse con el tiempo, aunque las versiones de alta resistencia al frotado han mejorado mucho en los últimos años.</p>
-<h2>Pintura vinílica</h2>
-<p>Contiene resinas de vinilo que le otorgan mayor flexibilidad y resistencia a la humedad. Especialmente recomendable para cocinas, baños y fachadas. Mayor durabilidad a largo plazo, aunque a un coste algo superior.</p>
-<div class="article__tip"><strong>Mi recomendación:</strong> Para la mayoría de habitaciones, una pintura plástica de buena marca (Titán, Bruguer, Valentine) es más que suficiente. Reserva la vinílica para cocinas, baños y exterior.</div>
-<h2>El acabado importa tanto como el tipo</h2>
-<h3>Mate</h3>
-<p>Absorbe la luz y disimula las imperfecciones. Ideal para dormitorios y salones donde la estética es prioritaria. Es el menos resistente al lavado.</p>
-<h3>Satinado</h3>
-<p>Ligero brillo, más resistente y fácil de limpiar que el mate. Mi favorito para cocinas, baños, pasillos y habitaciones infantiles. Aprovecha mejor la luz natural.</p>
-<h3>Brillo</h3>
-<p>Muy resistente y fácil de limpiar, pero acusa todas las imperfecciones. Lo reservo para puertas, marcos y rodapiés, no para paredes grandes.</p>
-<h2>¿Cuánta pintura necesito?</h2>
-<p>Una mano de pintura cubre aproximadamente 10-12 m² por litro en paredes porosas, hasta 14-16 m²/L en paredes ya pintadas y en buen estado. Compra siempre un 10-15 % más de lo calculado para los retoques.</p>
-    `,
-  },
-  {
-    slug: 'tendencias-color-2025',
-    cat: 'Inspiración',
-    title: 'Tendencias en colores para el hogar en 2025',
-    date: 'Mayo 2025',
-    readTime: '6 min',
-    content: `
-<h2>El color como protagonista</h2>
-<p>En 2025, el sector apunta a una tendencia clara: espacios que conectan con la naturaleza, la calidez y el bienestar. Atrás quedaron los blancos puros y los grises fríos. Ahora dominan los colores con personalidad, siempre equilibrados y sofisticados.</p>
-<h2>Los colores protagonistas de 2025</h2>
-<h3>Verde salvia y verde musgo</h3>
-<p>El verde en todas sus variantes terrosas es el color del momento. El verde salvia —un verde grisáceo y desaturado— es especialmente versátil: funciona en salones, dormitorios e incluso cocinas. Transmite calma, conexión con la naturaleza y sofisticación discreta. En Valencia, con mucha luz natural, gana profundidad y matices preciosos.</p>
-<h3>Terracota y ocre</h3>
-<p>Los tonos tierra siguen muy demandados. La terracota —un naranja quemado suavizado— encaja a la perfección con el clima y la arquitectura mediterránea. El ocre amarillento aporta una calidez luminosa muy especial.</p>
-<div class="article__tip"><strong>Combinación ganadora:</strong> Terracota suave en la pared, muebles de madera clara, textiles en blanco roto. Resultado espectacular y muy acogedor.</div>
-<h3>Azul noche e índigo</h3>
-<p>Para los valientes. Un azul oscuro y profundo en la pared del fondo de un salón o en el dormitorio principal crea una atmósfera elegante y envolvente. Contrasta perfectamente con dorados, bronces y maderas oscuras.</p>
-<h3>Blanco roto y crema</h3>
-<p>El blanco puro está perdiendo terreno frente a los blancos cálidos: marfil, crema, hueso. Menos duros visualmente, funcionan mejor con luz artificial y hacen el espacio más acogedor sin perder luminosidad.</p>
-<h3>Rosa arcilla</h3>
-<p>Más seco y mineral que un rosa convencional. Sorprendentemente versátil: dormitorios, estudios, incluso cocinas modernas.</p>
-<h2>Cómo aplicar las tendencias sin miedo</h2>
-<p>Mi recomendación siempre es la misma: empieza con una pared de acento. Pinta la pared más importante de la habitación y observa durante una semana cómo interactúa con la luz y el mobiliario. Si convence, extiendes al resto. Si no, solo has pintado una pared.</p>
-    `,
-  },
-  {
-    slug: 'errores-pintar-tu-mismo',
-    cat: 'Bricolaje',
-    title: '5 errores que cometes cuando pintas tú mismo',
-    date: 'Junio 2025',
-    readTime: '5 min',
-    content: `
-<h2>Pintar parece fácil… hasta que no lo es</h2>
-<p>No hay nada malo en querer pintar tu casa tú mismo. Es económico y satisfactorio. Sin embargo, como pintor profesional que lleva años resolviendo los resultados de bricolaje fallido, puedo decirte que hay errores muy comunes que arruinan el resultado. Aquí van los cinco más frecuentes.</p>
-<h2>Error 1: No preparar bien la superficie</h2>
-<p>El error más común y el más costoso. La pintura no puede hacer milagros: si la pared tiene grietas, agujeros o pintura vieja que se desprende, la nueva pintura tendrá los mismos problemas en semanas.</p>
-<p>Antes de pintar: limpia bien la pared, repara las imperfecciones con masilla, deja secar completamente y lija. Si hay humedad, trátala antes. De lo contrario, la nueva pintura se manchará igualmente.</p>
-<h2>Error 2: Saltarse la imprimación</h2>
-<p>La imprimación garantiza que la pintura se adhiere correctamente, cubre en menos manos y dura más. Es especialmente importante en paredes nuevas de yeso, en superficies muy porosas o cuando se cambia de un color oscuro a uno claro.</p>
-<div class="article__tip"><strong>Regla de oro:</strong> Si dudas entre imprimar o no, imprime siempre. El coste es mínimo comparado con el tiempo que ahorras en manos adicionales de pintura.</div>
-<h2>Error 3: Comprar pintura barata</h2>
-<p>Las pinturas de precio muy bajo tienen poca proporción de pigmento y resina, cubren mal y duran poco. Con una buena pintura de marca cubrirás en dos manos lo que con una barata necesitas cuatro. El resultado es mejor y al final más económico en tiempo y esfuerzo.</p>
-<h2>Error 4: Usar el rodillo equivocado</h2>
-<p>Para paredes lisas o semi-lisas, rodillo de pelo corto (6-9 mm). Para paredes rugosas o gotelé, pelo más largo (12-18 mm). Un rodillo inadecuado deja marcas de textura o aplica la pintura de forma irregular. Los rodillos baratos además sueltan pelusa en la pintura, muy difícil de retirar una vez seca.</p>
-<h2>Error 5: No proteger lo que no se pinta</h2>
-<p>Pintar sin proteger rodapiés, marcos, interruptores y suelos es la forma más rápida de arrepentirse. Una buena cinta de carrocero (Tesa, Scotch) y plásticos de protección son inversiones mínimas que evitan horas de limpieza posterior.</p>
-<p>El truco con la cinta: repasa el borde con el dedo para sellarlo bien y retírala siempre mientras la pintura aún está húmeda. Si esperas a que seque, puede arrancar parte de la pintura al quitarla.</p>
-    `,
-  },
-];
-
-const { slug } = Astro.params;
-const article = articles.find(a => a.slug === slug);
-
-if (!article) {
-  return Astro.redirect('/blog');
-}
+const { post } = Astro.props;
+const related = posts.filter(p => p.slug !== post.slug).slice(0, 2);
+const WA = `https://wa.me/34641891505?text=Hola%20Moha%2C%20he%20le%C3%ADdo%20tu%20art%C3%ADculo%20y%20me%20gustar%C3%ADa%20pedir%20presupuesto.`;
 ---
 <Layout
-  title={`${article.title} · Blog · Pinturas Moha`}
-  description={`${article.title} — Consejos de pintura profesional por Moha, pintor en Alaquàs, Valencia.`}
-  currentPage="/blog"
+  title={`${post.title} · Blog · Pinturas Moha`}
+  description={post.excerpt}
 >
-
-  <article class="article">
-    <div class="container">
-
-      <a href="/blog" class="article__back">
-        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" aria-hidden="true"><path d="M19 12H5M12 19l-7-7 7-7"/></svg>
+  <div class="art">
+    <div class="wrap">
+      <a href="/blog" class="art-back">
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><path d="M19 12H5M12 19l-7-7 7-7"/></svg>
         Volver al blog
       </a>
 
-      <header class="article__header">
-        <span class="article__cat">{article.cat}</span>
-        <h1 class="article__h1">{article.title}</h1>
-        <div class="article__meta">
-          <span>
-            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" aria-hidden="true"><rect x="3" y="4" width="18" height="18" rx="2"/><line x1="16" y1="2" x2="16" y2="6"/><line x1="8" y1="2" x2="8" y2="6"/><line x1="3" y1="10" x2="21" y2="10"/></svg>
-            {article.date}
+      <header class="art-hd">
+        <span class="art-cat">{post.cat}</span>
+        <h1 class="art-h1">{post.title}</h1>
+        <div class="art-meta">
+          <span class="art-mi">
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="3" y="4" width="18" height="18" rx="2"/><line x1="16" y1="2" x2="16" y2="6"/><line x1="8" y1="2" x2="8" y2="6"/><line x1="3" y1="10" x2="21" y2="10"/></svg>
+            {post.date}
           </span>
-          <span>
-            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" aria-hidden="true"><circle cx="12" cy="12" r="10"/><polyline points="12 6 12 12 16 14"/></svg>
-            {article.readTime} lectura
+          <span class="art-mi">
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="10"/><polyline points="12 6 12 12 16 14"/></svg>
+            {post.readTime} lectura
           </span>
-          <span>
-            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" aria-hidden="true"><path d="M20 21v-2a4 4 0 00-4-4H8a4 4 0 00-4 4v2"/><circle cx="12" cy="7" r="4"/></svg>
+          <span class="art-mi">
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M20 21v-2a4 4 0 00-4-4H8a4 4 0 00-4 4v2"/><circle cx="12" cy="7" r="4"/></svg>
             Moha · Pintor profesional
           </span>
         </div>
       </header>
 
-      <!-- Image placeholder -->
-      <div class="article__img-placeholder">Pinturas Moha · {article.cat}</div>
+      <!-- Cover image -->
+      <img
+        src={post.img}
+        alt={post.imgAlt}
+        class="art-cover"
+        loading="eager"
+        onerror="this.style.display='none';this.nextElementSibling.style.display='flex';"
+      />
+      <div class="art-cover-ph" style="display:none">Pinturas Moha · {post.cat}</div>
 
-      <div class="article__content" set:html={article.content} />
-
-      <!-- CTA at end of article -->
-      <div class="cta-banner" style="margin-top:64px">
-        <div>
-          <h2 class="cta-banner__title">¿Necesitas un presupuesto?</h2>
-          <p class="cta-banner__sub">Escríbeme y te respondo en menos de 24 horas.</p>
-        </div>
-        <a
-          href="https://wa.me/34641891505?text=Hola%20Moha%2C%20he%20leído%20tu%20blog%20y%20me%20gustaría%20pedir%20presupuesto."
-          target="_blank"
-          rel="noopener"
-          class="btn btn--accent"
-        >
-          Contactar por WhatsApp →
-        </a>
+      <div class="art-body">
+        <Fragment set:html={post.body} />
       </div>
 
-    </div>
-  </article>
+      <div class="cta" style="margin-top:64px">
+        <div><h2 class="cta-t">¿Necesitas un presupuesto?</h2><p class="cta-s">Escríbeme y te respondo en menos de 24 horas.</p></div>
+        <a href={WA} target="_blank" rel="noopener" class="btn btn-ac">Contactar por WhatsApp →</a>
+      </div>
 
+      {related.length > 0 && (
+        <div style="margin-top:72px;padding-top:52px;border-top:1px solid var(--border)">
+          <p class="lbl">Más artículos</p>
+          <h2 class="h2" style="margin-bottom:28px">Seguir leyendo</h2>
+          <div class="blog-g">
+            {related.map(r => (
+              <a href={`/blog/${r.slug}`} class="blog">
+                <div class="blog-img">
+                  <img
+                    src={r.img}
+                    alt={r.imgAlt}
+                    loading="lazy"
+                    onerror="this.style.display='none';this.nextElementSibling.style.display='flex';"
+                  />
+                  <div class="blog-img-ph" style="display:none">{r.cat}</div>
+                </div>
+                <div class="blog-body">
+                  <span class="blog-cat">{r.cat}</span>
+                  <h3 class="blog-title">{r.title}</h3>
+                  <p class="blog-exc">{r.excerpt}</p>
+                  <div class="blog-meta">
+                    <span class="blog-date">{r.date} · {r.readTime} lectura</span>
+                    <span class="blog-more">Leer <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><path d="M5 12h14M12 5l7 7-7 7"/></svg></span>
+                  </div>
+                </div>
+              </a>
+            ))}
+          </div>
+        </div>
+      )}
+    </div>
+  </div>
 </Layout>

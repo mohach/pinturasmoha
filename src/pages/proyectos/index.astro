@@ -1,0 +1,48 @@
+---
+import Layout from '../../layouts/Layout.astro';
+import { projects } from '../../data/projects.js';
+---
+<Layout title="Proyectos · Pinturas Moha" description="Proyectos de pintura realizados en Valencia y alrededores. Pintura interior y lacado de puertas.">
+  <div class="wrap">
+    <header class="ph">
+      <p class="lbl">Portafolio</p>
+      <h1 class="ph-h1">Proyectos realizados</h1>
+      <p class="ph-lead">Trabajos reales con fotos del antes y el después. Así es cómo queda cuando se hace bien.</p>
+    </header>
+  </div>
+  <section class="sec" style="padding-top:0">
+    <div class="wrap">
+      <div class="proj-g proj-g--2col">
+        {projects.map(p => (
+          <a href={`/proyectos/${p.slug}`} class="proj">
+            <div class="proj-img">
+              <img src={p.imgMain} alt={p.title} loading="lazy"
+                onerror="this.style.display='none';this.nextElementSibling.style.display='flex';" />
+              <div class="proj-img-ph" style="display:none">{p.location}</div>
+              <span class="proj-yr">{p.year}</span>
+            </div>
+            <div class="proj-body">
+              <p class="proj-loc">{p.location}</p>
+              <h2 class="proj-title">{p.title}</h2>
+              <p class="proj-exc">{p.excerpt}</p>
+              <div class="proj-foot">
+                <div class="proj-tags">{p.services.map(s => <span class="proj-tag">{s}</span>)}</div>
+                <span class="proj-arr"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M7 17L17 7M7 7h10v10"/></svg></span>
+              </div>
+            </div>
+          </a>
+        ))}
+      </div>
+
+      <div class="cta" style="margin-top:64px">
+        <div>
+          <h2 class="cta-t">¿Quieres un resultado así?</h2>
+          <p class="cta-s">Cuéntame qué necesitas y te envío presupuesto en 24 horas.</p>
+        </div>
+        <a href="https://wa.me/34641891505?text=Hola%20Moha%2C%20he%20visto%20tus%20proyectos%20y%20me%20gustar%C3%ADa%20pedir%20presupuesto." target="_blank" rel="noopener" class="btn btn-ac">
+          Pedir presupuesto →
+        </a>
+      </div>
+    </div>
+  </section>
+</Layout>
