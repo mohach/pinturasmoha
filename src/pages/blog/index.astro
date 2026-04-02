@@ -1,41 +1,73 @@
 ---
 import Layout from '../../layouts/Layout.astro';
-import { posts } from '../../data/posts.js';
+import { getCollection } from 'astro:content';
+
+const allPosts = await getCollection('blog');
+
+// Sort by date descending
+const posts = allPosts.sort((a, b) =>
+  new Date(b.data.date).getTime() - new Date(a.data.date).getTime()
+);
 ---
-<Layout title="Blog de Pintura · Consejos Profesionales · Pinturas Moha" description="Consejos, técnicas y guías de pintura escritas por Moha, pintor profesional en Alaquàs, Valencia. Cómo pintar, qué materiales usar y más.">
+<Layout
+  title="Blog de Pintura · Consejos Profesionales · Pinturas Moha"
+  description="Consejos, técnicas y guías de pintura escritas por Moha, pintor profesional en Alaquàs, Valencia. Artículos nuevos cada semana."
+>
   <div class="wrap">
     <header class="ph">
       <p class="lbl">Consejos y artículos</p>
       <h1 class="ph-h1">Blog de pintura</h1>
-      <p class="ph-lead">Trucos, técnicas y guías escritas desde la experiencia real. Todo lo que necesitas saber antes de empezar un proyecto.</p>
+      <p class="ph-lead">Trucos, técnicas y guías escritas desde la experiencia real. Artículo nuevo cada día.</p>
     </header>
   </div>
+
   <section class="sec" style="padding-top:0">
     <div class="wrap">
-      <div class="blog-g">
-        {posts.map(p => (
-          <a href={`/blog/${p.slug}`} class="blog">
-            <div class="blog-img">
-              <img
-                src={p.img}
-                alt={p.imgAlt}
-                loading="lazy"
-                onerror="this.style.display='none';this.nextElementSibling.style.display='flex';"
-              />
-              <div class="blog-img-ph" style="display:none">{p.cat}</div>
-            </div>
-            <div class="blog-body">
-              <span class="blog-cat">{p.cat}</span>
-              <h2 class="blog-title">{p.title}</h2>
-              <p class="blog-exc">{p.excerpt}</p>
-              <div class="blog-meta">
-                <span class="blog-date">{p.date} · {p.readTime} lectura</span>
-                <span class="blog-more">Leer <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><path d="M5 12h14M12 5l7 7-7 7"/></svg></span>
-              </div>
-            </div>
-          </a>
-        ))}
-      </div>
+      {posts.length === 0 ? (
+        <div style="text-align:center;padding:80px 0;color:var(--ink3)">
+          <p style="font-size:1rem">Próximamente — los artículos aparecerán aquí.</p>
+        </div>
+      ) : (
+        <div class="blog-g">
+          {posts.map(post => {
+            const hasImage = post.data.image && post.data.image.length > 0;
+            const dateStr = new Date(post.data.date).toLocaleDateString('es-ES', {
+              year: 'numeric', month: 'long', day: 'numeric'
+            });
+            return (
+              <a href={`/blog/${post.slug}`} class="blog">
+                <div class="blog-img">
+                  {hasImage ? (
+                    <img
+                      src={post.data.image}
+                      alt={post.data.title}
+                      loading="lazy"
+                      onerror="this.style.display='none';this.nextElementSibling.style.display='flex';"
+                    />
+                  ) : null}
+                  <div class="blog-img-ph" style={hasImage ? 'display:none' : 'display:flex'}>
+                    Pintura
+                  </div>
+                </div>
+                <div class="blog-body">
+                  <span class="blog-cat">Pintura</span>
+                  <h2 class="blog-title">{post.data.title}</h2>
+                  <p class="blog-exc">{post.data.description}</p>
+                  <div class="blog-meta">
+                    <span class="blog-date">{dateStr}</span>
+                    <span class="blog-more">
+                      Leer
+                      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5">
+                        <path d="M5 12h14M12 5l7 7-7 7"/>
+                      </svg>
+                    </span>
+                  </div>
+                </div>
+              </a>
+            );
+          })}
+        </div>
+      )}
     </div>
   </section>
 </Layout>

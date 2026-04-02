@@ -1,90 +1,139 @@
 ---
 import Layout from '../../layouts/Layout.astro';
-import { posts, postBodies } from '../../data/posts.js';
+import { getCollection, getEntry } from 'astro:content';
 
-export function getStaticPaths() {
-  return posts.map(p => ({
-    params: { slug: p.slug },
-    props:  { post: p },
+export async function getStaticPaths() {
+  const posts = await getCollection('blog');
+  return posts.map(post => ({
+    params: { slug: post.slug },
+    props:  { post },
   }));
 }
 
 const { post } = Astro.props;
-const body = postBodies[post.slug] || '';
-const related = posts.filter(p => p.slug !== post.slug).slice(0, 2);
+const { Content } = await post.render();
+
+// Related posts (2 most recent excluding current)
+const allPosts = await getCollection('blog');
+const related = allPosts
+  .filter(p => p.slug !== post.slug)
+  .sort((a, b) => new Date(b.data.date).getTime() - new Date(a.data.date).getTime())
+  .slice(0, 2);
+
+const dateStr = new Date(post.data.date).toLocaleDateString('es-ES', {
+  year: 'numeric', month: 'long', day: 'numeric'
+});
+
 const WA = `https://wa.me/34641891505?text=Hola%20Moha%2C%20he%20le%C3%ADdo%20tu%20art%C3%ADculo%20y%20me%20gustar%C3%ADa%20pedir%20presupuesto.`;
+const hasImage = post.data.image && post.data.image.length > 0;
 ---
 <Layout
-  title={`${post.title} · Blog · Pinturas Moha`}
-  description={post.excerpt}
-  image={post.img}
+  title={`${post.data.title} · Blog · Pinturas Moha`}
+  description={post.data.description}
+  image={hasImage ? post.data.image : undefined}
   type="article"
 >
   <div class="art">
     <div class="wrap">
+
       <a href="/blog" class="art-back">
-        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><path d="M19 12H5M12 19l-7-7 7-7"/></svg>
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5">
+          <path d="M19 12H5M12 19l-7-7 7-7"/>
+        </svg>
         Volver al blog
       </a>
 
       <header class="art-hd">
-        <span class="art-cat">{post.cat}</span>
-        <h1 class="art-h1">{post.title}</h1>
+        <span class="art-cat">Pintura</span>
+        <h1 class="art-h1">{post.data.title}</h1>
         <div class="art-meta">
           <span class="art-mi">
-            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="3" y="4" width="18" height="18" rx="2"/><line x1="16" y1="2" x2="16" y2="6"/><line x1="8" y1="2" x2="8" y2="6"/><line x1="3" y1="10" x2="21" y2="10"/></svg>
-            {post.date}
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+              <rect x="3" y="4" width="18" height="18" rx="2"/>
+              <line x1="16" y1="2" x2="16" y2="6"/>
+              <line x1="8" y1="2" x2="8" y2="6"/>
+              <line x1="3" y1="10" x2="21" y2="10"/>
+            </svg>
+            {dateStr}
           </span>
           <span class="art-mi">
-            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="10"/><polyline points="12 6 12 12 16 14"/></svg>
-            {post.readTime} lectura
-          </span>
-          <span class="art-mi">
-            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M20 21v-2a4 4 0 00-4-4H8a4 4 0 00-4 4v2"/><circle cx="12" cy="7" r="4"/></svg>
-            Moha · Pintor profesional
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+              <path d="M20 21v-2a4 4 0 00-4-4H8a4 4 0 00-4 4v2"/>
+              <circle cx="12" cy="7" r="4"/>
+            </svg>
+            {post.data.author}
           </span>
         </div>
       </header>
 
-      <img src={post.img} alt={post.imgAlt} class="art-cover" loading="eager"
-        onerror="this.style.display='none';this.nextElementSibling.style.display='flex';" />
-      <div class="art-cover-ph" style="display:none">Pinturas Moha · {post.cat}</div>
+      <!-- Cover image if available -->
+      {hasImage ? (
+        <img
+          src={post.data.image}
+          alt={post.data.title}
+          class="art-cover"
+          loading="eager"
+          onerror="this.style.display='none';"
+        />
+      ) : null}
 
+      <!-- Rendered Markdown content -->
       <div class="art-body">
-        <Fragment set:html={body} />
+        <Content />
       </div>
 
+      <!-- CTA -->
       <div class="cta" style="margin-top:64px">
-        <div><h2 class="cta-t">¿Necesitas un presupuesto?</h2><p class="cta-s">Escríbeme y te respondo en menos de 24 horas.</p></div>
-        <a href={WA} target="_blank" rel="noopener" class="btn btn-ac">Contactar por WhatsApp →</a>
+        <div>
+          <h2 class="cta-t">¿Necesitas un presupuesto?</h2>
+          <p class="cta-s">Escríbeme y te respondo en menos de 24 horas.</p>
+        </div>
+        <a href={WA} target="_blank" rel="noopener" class="btn btn-ac">
+          Contactar por WhatsApp →
+        </a>
       </div>
 
+      <!-- Related posts -->
       {related.length > 0 && (
         <div style="margin-top:72px;padding-top:52px;border-top:1px solid var(--border)">
           <p class="lbl">Más artículos</p>
           <h2 class="h2" style="margin-bottom:28px">Seguir leyendo</h2>
           <div class="blog-g">
-            {related.map(r => (
-              <a href={`/blog/${r.slug}`} class="blog">
-                <div class="blog-img">
-                  <img src={r.img} alt={r.imgAlt} loading="lazy"
-                    onerror="this.style.display='none';this.nextElementSibling.style.display='flex';" />
-                  <div class="blog-img-ph" style="display:none">{r.cat}</div>
-                </div>
-                <div class="blog-body">
-                  <span class="blog-cat">{r.cat}</span>
-                  <h3 class="blog-title">{r.title}</h3>
-                  <p class="blog-exc">{r.excerpt}</p>
-                  <div class="blog-meta">
-                    <span class="blog-date">{r.date} · {r.readTime} lectura</span>
-                    <span class="blog-more">Leer <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><path d="M5 12h14M12 5l7 7-7 7"/></svg></span>
+            {related.map(r => {
+              const rHasImg = r.data.image && r.data.image.length > 0;
+              const rDate = new Date(r.data.date).toLocaleDateString('es-ES', {
+                year: 'numeric', month: 'long', day: 'numeric'
+              });
+              return (
+                <a href={`/blog/${r.slug}`} class="blog">
+                  <div class="blog-img">
+                    {rHasImg ? (
+                      <img src={r.data.image} alt={r.data.title} loading="lazy"
+                        onerror="this.style.display='none';this.nextElementSibling.style.display='flex';" />
+                    ) : null}
+                    <div class="blog-img-ph" style={rHasImg ? 'display:none' : 'display:flex'}>Pintura</div>
                   </div>
-                </div>
-              </a>
-            ))}
+                  <div class="blog-body">
+                    <span class="blog-cat">Pintura</span>
+                    <h3 class="blog-title">{r.data.title}</h3>
+                    <p class="blog-exc">{r.data.description}</p>
+                    <div class="blog-meta">
+                      <span class="blog-date">{rDate}</span>
+                      <span class="blog-more">
+                        Leer
+                        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5">
+                          <path d="M5 12h14M12 5l7 7-7 7"/>
+                        </svg>
+                      </span>
+                    </div>
+                  </div>
+                </a>
+              );
+            })}
           </div>
         </div>
       )}
+
     </div>
   </div>
 </Layout>
