@@ -407,3 +407,118 @@ body{font-family:var(--sans);background:var(--bg);color:var(--ink);line-height:1
   margin-bottom: 14px;
 }
 .pd-description p:last-child { margin-bottom: 0; }
+
+/* ── DARK MODE ── */
+[data-theme="dark"] {
+  --ink:    #F2F1ED;
+  --ink2:   #C8C7C2;
+  --ink3:   #8C8B87;
+  --ink4:   #5A5956;
+  --border: #2E2D2A;
+  --bg:     #141412;
+  --bg2:    #1C1B19;
+  --white:  #1C1B19;
+  --acc:    #E06040;
+  --accd:   #c8502a;
+}
+[data-theme="dark"] .nav  { background: rgba(20,20,18,.94); }
+[data-theme="dark"] .mob  { background: #1C1B19; }
+[data-theme="dark"] .ft   { background: #0C0C0A; }
+[data-theme="dark"] .hero-card,
+[data-theme="dark"] .about-b,
+[data-theme="dark"] .pd-meta,
+[data-theme="dark"] .form-w { background: #1C1B19; border-color: #2E2D2A; }
+[data-theme="dark"] .srv   { background: #141412; }
+[data-theme="dark"] .srv:hover { background: #1C1B19; }
+[data-theme="dark"] .proj,
+[data-theme="dark"] .blog  { background: #1C1B19; border-color: #2E2D2A; }
+[data-theme="dark"] .testi { background: rgba(255,255,255,.03); border-color: rgba(255,255,255,.06); }
+[data-theme="dark"] .cta   { background: #0C0C0A; }
+[data-theme="dark"] .pd-gallery-pill--before { background: rgba(255,255,255,.06); border-color:#2E2D2A; }
+[data-theme="dark"] .pd-description { border-color: #2E2D2A; }
+[data-theme="dark"] .form-in,
+[data-theme="dark"] .form-ta,
+[data-theme="dark"] .form-sel { background: #141412; border-color: #2E2D2A; color: var(--ink); }
+[data-theme="dark"] .sec-alt  { background: #1C1B19; }
+[data-theme="dark"] .con-map  { border-color: #2E2D2A; }
+[data-theme="dark"] .con-map-wrap { border-color: #2E2D2A; }
+[data-theme="dark"] .con-soc-btn { background: #1C1B19; color: var(--ink2); border-color: #2E2D2A; }
+[data-theme="dark"] .con-ic   { border-color: #2E2D2A; color: var(--ink); }
+[data-theme="dark"] .art-tip  { background: rgba(224,96,64,.08); }
+
+/* ── THEME TOGGLE BUTTON ── */
+.theme-btn {
+  width: 36px; height: 36px;
+  border-radius: var(--r);
+  border: 1px solid var(--border);
+  background: transparent;
+  color: var(--ink2);
+  display: flex; align-items: center; justify-content: center;
+  cursor: pointer; transition: .15s;
+  flex-shrink: 0;
+}
+.theme-btn:hover { background: var(--bg2); color: var(--ink); }
+.theme-btn svg { width: 16px; height: 16px; }
+.icon-moon { display: none; }
+.icon-sun  { display: block; }
+[data-theme="dark"] .icon-sun  { display: none; }
+[data-theme="dark"] .icon-moon { display: block; }
+
+/* ── CONTACT PAGE REDESIGN (no form) ── */
+.con-layout {
+  display: grid;
+  grid-template-columns: 1fr 1.4fr;
+  gap: 56px;
+  align-items: start;
+}
+.con-wa-btn {
+  width: 100%;
+  justify-content: center;
+  margin-bottom: 36px;
+  font-size: 1rem;
+  padding: 15px 28px;
+}
+.con-items { display: flex; flex-direction: column; gap: 0; }
+.con-soc-row { display: flex; gap: 10px; margin-top: 28px; flex-wrap: wrap; }
+.con-soc-btn {
+  display: flex; align-items: center; gap: 8px;
+  padding: 9px 18px; border-radius: var(--r);
+  font-size: .85rem; font-weight: 600;
+  border: 1px solid var(--border);
+  color: var(--ink2); background: var(--bg2);
+  transition: .15s; cursor: pointer;
+}
+.con-soc-btn svg { width: 16px; height: 16px; }
+.con-soc-btn:hover { color: var(--ink); border-color: var(--ink3); }
+.con-soc-btn--ig:hover { background: linear-gradient(135deg,#f09433,#dc2743,#bc1888); color: #fff; border-color: transparent; }
+
+.con-map-wrap {
+  border: 1px solid var(--border);
+  border-radius: var(--rl);
+  overflow: hidden;
+}
+.con-map-label {
+  display: flex; align-items: center; gap: 7px;
+  font-size: .75rem; font-weight: 600;
+  letter-spacing: .06em; text-transform: uppercase;
+  color: var(--ink3);
+  padding: 14px 18px;
+  border-bottom: 1px solid var(--border);
+}
+.con-map-label svg { width: 14px; height: 14px; color: var(--acc); flex-shrink: 0; }
+.con-map {
+  height: 380px;
+  background: var(--bg2);
+}
+.con-map iframe { display: block; }
+.con-map-note {
+  padding: 14px 18px;
+  font-size: .78rem;
+  color: var(--ink3);
+  line-height: 1.55;
+  border-top: 1px solid var(--border);
+}
+@media(max-width:820px) {
+  .con-layout { grid-template-columns: 1fr; gap: 36px; }
+  .con-map { height: 280px; }
+}

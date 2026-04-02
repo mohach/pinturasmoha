@@ -1,11 +1,21 @@
 ---
 import '../styles/global.css';
 
+interface Props {
+  title?: string;
+  description?: string;
+  image?: string;
+  type?: string;
+}
+
 const {
   title = 'Pinturas Moha · Pintor Profesional en Alaquàs, Valencia',
-  description = 'Pintor profesional en Alaquàs y Valencia. Pintura interior, exterior, alisado de gotelé. Presupuesto gratuito en 24h.',
+  description = 'Pintor profesional en Alaquàs y Valencia. Pintura interior, exterior, alisado de gotelé. Presupuesto gratuito en 24h. +34 641 89 15 05.',
+  image = 'https://pinturasmoha.es/wp-content/uploads/2025/12/painter1.png',
+  type = 'website',
 } = Astro.props;
 
+const canon = new URL(Astro.url.pathname, 'https://pinturasmoha.es').href;
 const path = Astro.url.pathname;
 
 const navLinks = [
@@ -29,41 +39,119 @@ const WA   = 'https://wa.me/34641891505?text=Hola%20Moha%2C%20me%20gustar%C3%ADa
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <meta name="description" content={description} />
+
+  <!-- Primary SEO -->
   <title>{title}</title>
+  <meta name="description" content={description} />
+  <link rel="canonical" href={canon} />
+
+  <!-- Open Graph -->
+  <meta property="og:title" content={title} />
+  <meta property="og:description" content={description} />
+  <meta property="og:url" content={canon} />
+  <meta property="og:type" content={type} />
+  <meta property="og:image" content={image} />
+  <meta property="og:locale" content="es_ES" />
+  <meta property="og:site_name" content="Pinturas Moha" />
+
+  <!-- Twitter Card -->
+  <meta name="twitter:card" content="summary_large_image" />
+  <meta name="twitter:title" content={title} />
+  <meta name="twitter:description" content={description} />
+  <meta name="twitter:image" content={image} />
+
+  <!-- Geo / Local -->
+  <meta name="geo.region" content="ES-VC" />
+  <meta name="geo.placename" content="Alaquàs, Valencia" />
+
+  <!-- Schema.org LocalBusiness -->
+  <script type="application/ld+json">
+  {
+    "@context": "https://schema.org",
+    "@type": "LocalBusiness",
+    "name": "Pinturas Moha",
+    "description": "Pintor profesional en Alaquàs y Valencia. Pintura interior, exterior y alisado de gotelé.",
+    "url": "https://pinturasmoha.es",
+    "telephone": "+34641891505",
+    "email": "info@pinturasmoha.es",
+    "image": "https://pinturasmoha.es/wp-content/uploads/2025/12/painter1.png",
+    "priceRange": "€€",
+    "address": {
+      "@type": "PostalAddress",
+      "addressLocality": "Alaquàs",
+      "addressRegion": "Valencia",
+      "addressCountry": "ES"
+    },
+    "geo": {
+      "@type": "GeoCoordinates",
+      "latitude": 39.4599,
+      "longitude": -0.4502
+    },
+    "openingHoursSpecification": [
+      {
+        "@type": "OpeningHoursSpecification",
+        "dayOfWeek": ["Monday","Tuesday","Wednesday","Thursday","Friday","Saturday"],
+        "opens": "08:00",
+        "closes": "19:00"
+      }
+    ],
+    "sameAs": [
+      "https://www.instagram.com/pinturasmoha/",
+      "https://www.tiktok.com/@pinturasmoha"
+    ]
+  }
+  </script>
+
+  <!-- Favicon -->
+  <link rel="icon" href={LOGO} type="image/png" />
+
+  <!-- Fonts -->
   <link rel="preconnect" href="https://fonts.googleapis.com" />
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
   <link href="https://fonts.googleapis.com/css2?family=DM+Sans:ital,opsz,wght@0,9..40,300;0,9..40,400;0,9..40,500;0,9..40,600;1,9..40,400&family=DM+Serif+Display&display=swap" rel="stylesheet" />
-  <link rel="icon" href={LOGO} type="image/png" />
+
+  <!-- Dark mode: apply before render to avoid flash -->
+  <script is:inline>
+    (function(){
+      const saved = localStorage.getItem('theme');
+      const sys = window.matchMedia('(prefers-color-scheme: dark)').matches ? 'dark' : 'light';
+      document.documentElement.setAttribute('data-theme', saved || sys);
+    })();
+  </script>
 </head>
 <body>
 
+<!-- NAV -->
 <nav class="nav" id="mainNav">
   <div class="nav-inner">
-    <a href="/" class="nav-logo" aria-label="Pinturas Moha">
+    <a href="/" class="nav-logo" aria-label="Pinturas Moha – Inicio">
       <img src={LOGO} alt="Pinturas Moha" height="34"
         onerror="this.style.display='none';this.nextElementSibling.style.display='block';" />
-      <span class="nav-logo-fb">Pinturas<span>Moha</span></span>
+      <span class="nav-logo-fb" style="display:none">Pinturas<span>Moha</span></span>
     </a>
 
     <ul class="nav-links" role="list">
       {navLinks.map(n => (
-        <li>
-          <a href={n.href} class={`nav-link${active(n.href) ? ' active' : ''}`}>
-            {n.label}
-          </a>
-        </li>
+        <li><a href={n.href} class={`nav-link${active(n.href) ? ' active' : ''}`}>{n.label}</a></li>
       ))}
     </ul>
 
-    <a href={WA} target="_blank" rel="noopener" class="nav-cta" aria-label="WhatsApp">
-      <svg viewBox="0 0 24 24" fill="currentColor" aria-hidden="true"><path d="M17.472 14.382c-.297-.149-1.758-.867-2.03-.967-.273-.099-.471-.148-.67.15-.197.297-.767.966-.94 1.164-.173.199-.347.223-.644.075-.297-.15-1.255-.463-2.39-1.475-.883-.788-1.48-1.761-1.653-2.059-.173-.297-.018-.458.13-.606.134-.133.298-.347.446-.52.149-.174.198-.298.298-.497.099-.198.05-.371-.025-.52-.075-.149-.669-1.612-.916-2.207-.242-.579-.487-.5-.669-.51-.173-.008-.371-.01-.57-.01-.198 0-.52.074-.792.372-.272.297-1.04 1.016-1.04 2.479 0 1.462 1.065 2.875 1.213 3.074.149.198 2.096 3.2 5.077 4.487.709.306 1.262.489 1.694.625.712.227 1.36.195 1.871.118.571-.085 1.758-.719 2.006-1.413.248-.694.248-1.289.173-1.413-.074-.124-.272-.198-.57-.347m-5.421 7.403h-.004a9.87 9.87 0 01-5.031-1.378l-.361-.214-3.741.982.998-3.648-.235-.374a9.86 9.86 0 01-1.51-5.26c.001-5.45 4.436-9.884 9.888-9.884 2.64 0 5.122 1.03 6.988 2.898a9.825 9.825 0 012.893 6.994c-.003 5.45-4.437 9.884-9.885 9.884m8.413-18.297A11.815 11.815 0 0012.05 0C5.495 0 .16 5.335.157 11.892c0 2.096.547 4.142 1.588 5.945L.057 24l6.305-1.654a11.882 11.882 0 005.683 1.448h.005c6.554 0 11.89-5.335 11.893-11.893a11.821 11.821 0 00-3.48-8.413z"/></svg>
-      WhatsApp
-    </a>
+    <div style="display:flex;align-items:center;gap:8px">
+      <!-- Theme toggle -->
+      <button class="theme-btn" id="themeBtn" aria-label="Cambiar tema claro/oscuro" title="Cambiar tema">
+        <svg class="icon-sun" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="5"/><path d="M12 1v2M12 21v2M4.22 4.22l1.42 1.42M18.36 18.36l1.42 1.42M1 12h2M21 12h2M4.22 19.78l1.42-1.42M18.36 5.64l1.42-1.42"/></svg>
+        <svg class="icon-moon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M21 12.79A9 9 0 1111.21 3 7 7 0 0021 12.79z"/></svg>
+      </button>
 
-    <button class="burger" id="burger" aria-label="Menú" aria-expanded="false">
-      <span></span><span></span><span></span>
-    </button>
+      <a href={WA} target="_blank" rel="noopener" class="nav-cta" aria-label="WhatsApp">
+        <svg viewBox="0 0 24 24" fill="currentColor"><path d="M17.472 14.382c-.297-.149-1.758-.867-2.03-.967-.273-.099-.471-.148-.67.15-.197.297-.767.966-.94 1.164-.173.199-.347.223-.644.075-.297-.15-1.255-.463-2.39-1.475-.883-.788-1.48-1.761-1.653-2.059-.173-.297-.018-.458.13-.606.134-.133.298-.347.446-.52.149-.174.198-.298.298-.497.099-.198.05-.371-.025-.52-.075-.149-.669-1.612-.916-2.207-.242-.579-.487-.5-.669-.51-.173-.008-.371-.01-.57-.01-.198 0-.52.074-.792.372-.272.297-1.04 1.016-1.04 2.479 0 1.462 1.065 2.875 1.213 3.074.149.198 2.096 3.2 5.077 4.487.709.306 1.262.489 1.694.625.712.227 1.36.195 1.871.118.571-.085 1.758-.719 2.006-1.413.248-.694.248-1.289.173-1.413-.074-.124-.272-.198-.57-.347m-5.421 7.403h-.004a9.87 9.87 0 01-5.031-1.378l-.361-.214-3.741.982.998-3.648-.235-.374a9.86 9.86 0 01-1.51-5.26c.001-5.45 4.436-9.884 9.888-9.884 2.64 0 5.122 1.03 6.988 2.898a9.825 9.825 0 012.893 6.994c-.003 5.45-4.437 9.884-9.885 9.884m8.413-18.297A11.815 11.815 0 0012.05 0C5.495 0 .16 5.335.157 11.892c0 2.096.547 4.142 1.588 5.945L.057 24l6.305-1.654a11.882 11.882 0 005.683 1.448h.005c6.554 0 11.89-5.335 11.893-11.893a11.821 11.821 0 00-3.48-8.413z"/></svg>
+        WhatsApp
+      </a>
+
+      <button class="burger" id="burger" aria-label="Abrir menú" aria-expanded="false">
+        <span></span><span></span><span></span>
+      </button>
+    </div>
   </div>
 </nav>
 
@@ -73,10 +161,9 @@ const WA   = 'https://wa.me/34641891505?text=Hola%20Moha%2C%20me%20gustar%C3%ADa
   ))}
 </div>
 
-<main>
-  <slot />
-</main>
+<main><slot /></main>
 
+<!-- FOOTER -->
 <footer class="ft">
   <div class="wrap">
     <div class="ft-g">
@@ -84,7 +171,7 @@ const WA   = 'https://wa.me/34641891505?text=Hola%20Moha%2C%20me%20gustar%C3%ADa
         <div class="ft-logo">
           <img src={LOGO} alt="Pinturas Moha" height="30"
             onerror="this.style.display='none';this.nextElementSibling.style.display='block';" />
-          <span class="ft-logo-fb">Pinturas<span>Moha</span></span>
+          <span class="ft-logo-fb" style="display:none">Pinturas<span style="color:var(--acc)">Moha</span></span>
         </div>
         <p class="ft-tag">Pintor profesional en Alaquàs, Valencia. Calidad que se nota en cada acabado.</p>
         <p class="ft-c"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M22 16.92v3a2 2 0 01-2.18 2 19.79 19.79 0 01-8.63-3.07A19.5 19.5 0 013.07 9.81a19.79 19.79 0 01-3.07-8.68A2 2 0 012 .18h3a2 2 0 012 1.72c.127.96.361 1.903.7 2.81a2 2 0 01-.45 2.11L6.91 7.91a16 16 0 006.08 6.08l1.27-1.27a2 2 0 012.11-.45c.907.339 1.85.573 2.81.7A2 2 0 0121.73 15l.19 1.92z"/></svg>+34 641 89 15 05</p>
@@ -121,27 +208,41 @@ const WA   = 'https://wa.me/34641891505?text=Hola%20Moha%2C%20me%20gustar%C3%ADa
   </div>
 </footer>
 
+<!-- WA Float -->
 <a href={WA} target="_blank" rel="noopener" class="waf" aria-label="WhatsApp">
   <svg viewBox="0 0 24 24" fill="currentColor"><path d="M17.472 14.382c-.297-.149-1.758-.867-2.03-.967-.273-.099-.471-.148-.67.15-.197.297-.767.966-.94 1.164-.173.199-.347.223-.644.075-.297-.15-1.255-.463-2.39-1.475-.883-.788-1.48-1.761-1.653-2.059-.173-.297-.018-.458.13-.606.134-.133.298-.347.446-.52.149-.174.198-.298.298-.497.099-.198.05-.371-.025-.52-.075-.149-.669-1.612-.916-2.207-.242-.579-.487-.5-.669-.51-.173-.008-.371-.01-.57-.01-.198 0-.52.074-.792.372-.272.297-1.04 1.016-1.04 2.479 0 1.462 1.065 2.875 1.213 3.074.149.198 2.096 3.2 5.077 4.487.709.306 1.262.489 1.694.625.712.227 1.36.195 1.871.118.571-.085 1.758-.719 2.006-1.413.248-.694.248-1.289.173-1.413-.074-.124-.272-.198-.57-.347m-5.421 7.403h-.004a9.87 9.87 0 01-5.031-1.378l-.361-.214-3.741.982.998-3.648-.235-.374a9.86 9.86 0 01-1.51-5.26c.001-5.45 4.436-9.884 9.888-9.884 2.64 0 5.122 1.03 6.988 2.898a9.825 9.825 0 012.893 6.994c-.003 5.45-4.437 9.884-9.885 9.884m8.413-18.297A11.815 11.815 0 0012.05 0C5.495 0 .16 5.335.157 11.892c0 2.096.547 4.142 1.588 5.945L.057 24l6.305-1.654a11.882 11.882 0 005.683 1.448h.005c6.554 0 11.89-5.335 11.893-11.893a11.821 11.821 0 00-3.48-8.413z"/></svg>
 </a>
 
 <script>
+  // Nav scroll shadow
   const nav = document.getElementById('mainNav');
-  window.addEventListener('scroll', () => {
-    nav?.classList.toggle('scrolled', window.scrollY > 8);
-  }, { passive: true });
+  window.addEventListener('scroll', () => nav?.classList.toggle('scrolled', scrollY > 8), { passive: true });
 
+  // Burger
   const burger = document.getElementById('burger');
   const mob = document.getElementById('mob');
   burger?.addEventListener('click', () => {
     const open = mob?.classList.toggle('open');
     burger.setAttribute('aria-expanded', String(!!open));
   });
-  mob?.querySelectorAll('a').forEach(a => {
-    a.addEventListener('click', () => {
-      mob.classList.remove('open');
-      burger?.setAttribute('aria-expanded', 'false');
-    });
+  mob?.querySelectorAll('a').forEach(a => a.addEventListener('click', () => {
+    mob.classList.remove('open');
+    burger?.setAttribute('aria-expanded', 'false');
+  }));
+
+  // Dark / light toggle
+  const btn = document.getElementById('themeBtn');
+  function applyTheme(t: string) {
+    document.documentElement.setAttribute('data-theme', t);
+    localStorage.setItem('theme', t);
+  }
+  btn?.addEventListener('click', () => {
+    const cur = document.documentElement.getAttribute('data-theme');
+    applyTheme(cur === 'dark' ? 'light' : 'dark');
+  });
+  // System preference listener
+  window.matchMedia('(prefers-color-scheme: dark)').addEventListener('change', e => {
+    if (!localStorage.getItem('theme')) applyTheme(e.matches ? 'dark' : 'light');
   });
 </script>
 </body>

@@ -1,6 +1,6 @@
 ---
 import Layout from '../../layouts/Layout.astro';
-import { posts } from '../../data/posts.js';
+import { posts, postBodies } from '../../data/posts.js';
 
 export function getStaticPaths() {
   return posts.map(p => ({
@@ -10,12 +10,15 @@ export function getStaticPaths() {
 }
 
 const { post } = Astro.props;
+const body = postBodies[post.slug] || '';
 const related = posts.filter(p => p.slug !== post.slug).slice(0, 2);
 const WA = `https://wa.me/34641891505?text=Hola%20Moha%2C%20he%20le%C3%ADdo%20tu%20art%C3%ADculo%20y%20me%20gustar%C3%ADa%20pedir%20presupuesto.`;
 ---
 <Layout
   title={`${post.title} · Blog · Pinturas Moha`}
   description={post.excerpt}
+  image={post.img}
+  type="article"
 >
   <div class="art">
     <div class="wrap">
@@ -43,18 +46,12 @@ const WA = `https://wa.me/34641891505?text=Hola%20Moha%2C%20he%20le%C3%ADdo%20tu
         </div>
       </header>
 
-      <!-- Cover image -->
-      <img
-        src={post.img}
-        alt={post.imgAlt}
-        class="art-cover"
-        loading="eager"
-        onerror="this.style.display='none';this.nextElementSibling.style.display='flex';"
-      />
+      <img src={post.img} alt={post.imgAlt} class="art-cover" loading="eager"
+        onerror="this.style.display='none';this.nextElementSibling.style.display='flex';" />
       <div class="art-cover-ph" style="display:none">Pinturas Moha · {post.cat}</div>
 
       <div class="art-body">
-        <Fragment set:html={post.body} />
+        <Fragment set:html={body} />
       </div>
 
       <div class="cta" style="margin-top:64px">
@@ -70,12 +67,8 @@ const WA = `https://wa.me/34641891505?text=Hola%20Moha%2C%20he%20le%C3%ADdo%20tu
             {related.map(r => (
               <a href={`/blog/${r.slug}`} class="blog">
                 <div class="blog-img">
-                  <img
-                    src={r.img}
-                    alt={r.imgAlt}
-                    loading="lazy"
-                    onerror="this.style.display='none';this.nextElementSibling.style.display='flex';"
-                  />
+                  <img src={r.img} alt={r.imgAlt} loading="lazy"
+                    onerror="this.style.display='none';this.nextElementSibling.style.display='flex';" />
                   <div class="blog-img-ph" style="display:none">{r.cat}</div>
                 </div>
                 <div class="blog-body">
