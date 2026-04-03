@@ -1,18 +1,15 @@
 name: Daily Blog Post
 
 on:
-  # Run every day at 8:00 AM UTC (10:00 AM Spain time)
   schedule:
-    - cron: '0 8 * * *'
-
-  # Allow manual trigger from GitHub UI
-  workflow_dispatch:
+    - cron: '0 8 * * *'   # 8:00 AM UTC = 10:00 AM Spain
+  workflow_dispatch:        # manual trigger from GitHub UI
 
 jobs:
   generate-post:
     runs-on: ubuntu-latest
     permissions:
-      contents: write   # needed to push back to repo
+      contents: write
 
     steps:
 
@@ -26,21 +23,19 @@ jobs:
         with:
           python-version: '3.11'
 
-      - name: Install Python dependencies
-        run: |
-          pip install google-genai Pillow
+      - name: Install dependencies
+        run: pip install requests Pillow
 
       - name: Run blog bot
         env:
-          GEMINI_API_KEY: ${{ secrets.GEMINI_API_KEY }}
-        run: |
-          python pinturasmohabot.py
+          DEEPSEEK_API_KEY:    ${{ secrets.DEEPSEEK_API_KEY }}
+          UNSPLASH_ACCESS_KEY: ${{ secrets.UNSPLASH_ACCESS_KEY }}
+        run: python pinturasmohabot.py
 
-      - name: Commit and push new post
+      - name: Commit and push
         run: |
           git config user.name  "Pinturas Moha Bot"
           git config user.email "bot@pinturasmoha.es"
           git add src/content/blog/ public/images/blog/
-          # Only commit if there are changes
           git diff --staged --quiet || git commit -m "📝 Blog post: $(date '+%Y-%m-%d')"
           git push
