@@ -155,6 +155,17 @@ const WA   = 'https://wa.me/34641891505?text=Hola%20Moha%2C%20me%20gustar%C3%ADa
   </div>
 </nav>
 
+  <!-- BANNER "NO TRABAJANDO AHORA" -->
+  <div class="banner-no-trabajo" id="bannerNoTrabajo">
+    <div class="banner-content">
+      <span class="banner-icon">⚠️</span>
+      <span class="banner-text">
+        <strong>ACTUALMENTE NO ESTOY TRABAJANDO</strong> - No acepto nuevos proyectos temporalmente. Volveré pronto.
+      </span>
+      <button class="banner-close" id="bannerClose" aria-label="Cerrar banner">×</button>
+    </div>
+  </div>
+
 <div class="mob" id="mob">
   {navLinks.map(n => (
     <a href={n.href} class={active(n.href) ? 'active' : ''}>{n.label}</a>
@@ -244,6 +255,32 @@ const WA   = 'https://wa.me/34641891505?text=Hola%20Moha%2C%20me%20gustar%C3%ADa
   window.matchMedia('(prefers-color-scheme: dark)').addEventListener('change', e => {
     if (!localStorage.getItem('theme')) applyTheme(e.matches ? 'dark' : 'light');
   });
+  
+  // Cerrar banner "No trabajando ahora"
+  const banner = document.getElementById('bannerNoTrabajo');
+  const bannerClose = document.getElementById('bannerClose');
+  
+  if (banner && bannerClose) {
+    // Guardar en localStorage si el usuario cerró el banner
+    if (!localStorage.getItem('bannerCerrado')) {
+      banner.style.display = 'block';
+    } else {
+      banner.style.display = 'none';
+    }
+    
+    bannerClose.addEventListener('click', () => {
+      banner.style.display = 'none';
+      localStorage.setItem('bannerCerrado', 'true');
+    });
+    
+    // También cerrar al hacer clic en cualquier parte del banner (opcional)
+    banner.addEventListener('click', (e) => {
+      if (e.target === banner) {
+        banner.style.display = 'none';
+        localStorage.setItem('bannerCerrado', 'true');
+      }
+    });
+  }
 </script>
 </body>
 </html>
