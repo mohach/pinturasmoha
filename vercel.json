@@ -1,12 +1,5 @@
 {
-  "rewrites": [
-    {
-      "source": "/",
-      "destination": "/mantenimiento.html"
-    },
-    {
-      "source": "/(.*)",
-      "destination": "/mantenimiento.html"
-    }
+  "routes": [
+    { "src": "/.*", "dest": "/mantenimiento.html" }
   ]
 }
